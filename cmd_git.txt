@@ -1,0 +1,35 @@
+comande pour git
+
+cd _nom fichier_ 		allez vers fichier
+ls						voir contenu fichier courant
+
+
+git clone https://github.com/XeniaTitova/...		copie le repertoir git dans le dossier acctif
+
+git status											montre le status de tout les dossier du fichier acctif (modifier, enregistré---)
+
+git add _nom_fichier_								ajoute un nouveau fichier dans git
+
+git commit -m "commit message"						ajouté un point de controle de mes modification (a faire avent le push)
+
+git push <remote> <branch-name>						sauvgarder mes modification au serveur
+
+git pull 											telecharger tout les modification
+
+
+
+branches:
+
+git branch 											voir la branche acctive
+
+git branch nom_nouvelle_branche						création nouvelle branche (la branche ne devien pas branche acctive pourautemps)
+
+git checkout nom_branche							changer de branche acctive
+
+git branch -D nom_branche							suprimmé une branche
+
+git merge nom_branche								integré la branche a la branche acctive (suprime pas la branche)
+
+git push --set-upstream origin new_branche			sauvgarder nouvelle branche sur git
+ 
+ jupyter-lab
