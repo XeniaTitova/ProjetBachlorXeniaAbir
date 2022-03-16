@@ -16,7 +16,7 @@ for name_img in tout_image:
     image_copy2 = image1.copy()
 
     cv2.drawContours(image_copy2, contours2, -1, (255, 0, 255), 2, cv2.LINE_AA)
-    cv2.imwrite('image_contour/contour'+ name_img, image_copy2)
+    cv2.imwrite('image_contour/contour_'+ name_img, image_copy2)
 
     image_copy3 = image1.copy()
     for i, contour in enumerate(contours2): # loop over one contour area
@@ -24,5 +24,5 @@ for name_img in tout_image:
            #draw a circle on the current contour coordinate
            cv2.circle(image_copy3, ((contour_point[0][0], contour_point[0][1])), 2, (0, 255, 0), 2, cv2.LINE_AA)
 
-    cv2.imwrite('image_point_simple/point_simple' + name_img, image_copy3)
+    cv2.imwrite('image_point_simple/point_simple_' + name_img, image_copy3)
     print('image ' + name_img + ' a été traitée')
