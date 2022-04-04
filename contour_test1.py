@@ -4,6 +4,7 @@ import numpy as np
 import os
 tout_image = os.listdir("image")
 
+
 for name_img in tout_image:
 
     # to actually visualize the effect of `CHAIN_APPROX_SIMPLE`, we need a proper image

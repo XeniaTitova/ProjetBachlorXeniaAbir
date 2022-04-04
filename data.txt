@@ -1,0 +1,6 @@
+LEGENDE: 
+V: 	 image trêtée avec sucsess
+I: 	 image trêtée avec sucsess mais il y a eu des point parasite détecter donc il y a possibilité d'impresision
+W: 	 il y a surment eu des problème de traitement
+
+V		 les point trouvé pour l'image 	image_exemple.png 	sont : 	[[398, 143], [479, 80], [379, 44], [264, 193], [146, 159], [244, 93], [217, 391], [304, 480], [349, 364]]
