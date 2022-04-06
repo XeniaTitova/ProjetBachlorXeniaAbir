@@ -19,12 +19,14 @@ h = 1.2         #hauteur du robeaut
 pts_centre = [[0,10,h], [-15,25,h], [-30,0,h]]
 pts_coin = [[-4.4,11.5,h], [5,11.5,h], [0.25,19.7,h], [-15.25,15.3,h], [-20,23.5,h], [-10.6,23.5,h], [-28.5,4.4,h], [-28.5,-5,h], [-20.3,-0.25,h]]
 
-tout_image = os.listdir(file_imput) #liste de tout les nom d'images
-
+#gestion fichier
 fichier = open(name_txt_file, "w")#fichier dans le qulle on note les valuers
 fichier.write("LEGENDE: \nV: \t image trêtée avec sucsess")
 fichier.write("\nI: \t image trêtée avec sucsess mais il y a eu des point parasite détecter donc il y a possibilité d'impresision")
 fichier.write("\nW: \t il y a surment eu des problème de traitement\n")
+
+
+tout_image = os.listdir(file_imput) #liste de tout les nom d'images
 
 #pour barre de progression
 nb_img = len(tout_image)
@@ -32,7 +34,10 @@ i = 0
 len_barre = 60-1
 step = nb_img / len_barre
 num_errors = 0
+num_warning = 0
 animation = ["-", "\\", "|", "/"]
+print("\x1b\x1b[0m")
+
 
 for img in tout_image:
 
@@ -49,6 +54,7 @@ for img in tout_image:
         #print(pos_coint_reel)
         if(W):
             status = "W"
+            num_warning += 1
         else:
             if(I):
                status = "I" 
@@ -59,18 +65,21 @@ for img in tout_image:
         #affichage barre de progression
         i+=1
         x = int(len_barre*i/nb_img)
-        err_text = " " if num_errors == 0 else "err: " + str(num_errors)
+        err_text = "err: " + str(num_errors)
+        war_text = "war: " + str(num_warning)
         anim = animation[i % 4] if i < nb_img else ""
-        print ("\x1b[1A\x1b[33;1m[%s]\x1b[2G%s%s\x1b[%iG\x1b[32m(%i/%i) \x1b[31;1m%s\x1b[0m" 
-            % ("."*len_barre, "#"*(int(i / step)), anim, (len_barre + 4), i, nb_img, err_text))
+        print ("\x1b[1A\x1b[33;1m[%s]\x1b[2G%s%s\x1b[%iG\x1b[32m(%i/%i) \x1b[31;1m%s\x1b[0m\x1b[31;1m%s\x1b[36m" 
+            % ("."*len_barre, "#"*(int(i / step)), anim, (len_barre + 4), i, nb_img, err_text, "\t " + war_text))
     except Exception as err:
         i+=1
         num_errors = num_errors + 1
         print("\x1b[1A\x1b[31;1mimage %s: %s\x1b[0J\x1b[1B\x1b[0m" % (img, "n'a pas pu être trété"))
-        fichier.write("\nF\t\t  les point trouvé pour l'image \t" + img + " \tsont : \t" +  "pas trouvé")
+        fichier.write("\nF\t\t les point trouvé pour l'image \t" + img + " \tsont : \t" +  "pas trouvé")
 
-    
-    
+juste = (nb_img - num_errors - num_warning)*100/nb_img 
+text_fin = "poursantage de réucite = ",juste,"%"
+print("PROCESS COMPLETE")
+print(text_fin)
+fichier.write("\n\n\n" + text_fin)
 
-    #print("%s[%s%s] %i/%i \r" % ("", "#"*x, "."*(len_barre-x), i, nb_img))
 fichier.close()
