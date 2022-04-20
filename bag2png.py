@@ -4,11 +4,14 @@ import rosbag
 import cv2
 from cv_bridge import CvBridge
 import numpy as np
+import time
 #from PIL.Image import *
 
-FILENAME = 'mori_aruco_new'#nom du fichier .bag
+#FILENAME = 'mori_aruco_new'#nom du fichier .bag
+FILENAME = "roombot_aruco"
 BAGFILE = FILENAME + '.bag'
 
+tps1 = time.process_time()
 
 if __name__ == '__main__':
     bag = rosbag.Bag(BAGFILE)
@@ -32,7 +35,7 @@ if __name__ == '__main__':
             else:
                 cv_image = cv_image[:,:,::-1] #changement de couleur
             # cv2.imwrite(ROOT_DIR + '/image/' + DESCRIPTION + str(b.timestamp) + '.png', cv_image)# emplacement ou les images sont enregistrée (ne pas oublier de créé le fichier color)
-                cv2.imwrite('image/' + DESCRIPTION + f"{num_img:04}" + '.png', cv_image)
+                cv2.imwrite('image2/' + DESCRIPTION + f"{num_img:04}" + '.png', cv_image)
             print('saved: ' + DESCRIPTION + f"{num_img:04}" + '.png')
             num_img += 1 
 
@@ -40,3 +43,7 @@ if __name__ == '__main__':
     bag.close()
 
     print('PROCESS COMPLETE')
+
+    tps2 = time.process_time()
+
+    print("temps d'execution : ", tps2 - tps1, "s")
