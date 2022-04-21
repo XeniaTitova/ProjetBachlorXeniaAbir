@@ -2,16 +2,16 @@ import cv2
 from cv_bridge import CvBridge
 import numpy as np
 import os
-tout_image = os.listdir("image")
+tout_image = os.listdir("image2")
 
 
 for name_img in tout_image:
 
     # to actually visualize the effect of `CHAIN_APPROX_SIMPLE`, we need a proper image
-    image1 = cv2.imread('image/' + name_img)
+    image1 = cv2.imread('image2/' + name_img)
     img_gray1 = cv2.cvtColor(image1, cv2.COLOR_BGR2GRAY)
 
-    ret,thresh1 = cv2.threshold(img_gray1, 150, 255, cv2.THRESH_BINARY)
+    ret,thresh1 = cv2.threshold(img_gray1, 40, 255, cv2.THRESH_BINARY)
     contours2, hierarchy2 = cv2.findContours(thresh1, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
     image_copy2 = image1.copy()

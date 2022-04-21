@@ -15,10 +15,10 @@ file_out_axe_detect     = "image_axe_detect"
 file_out_pts_3Dto2D     = "image_pts_3Dto2D"
 file_out_img_ok         = "image_treter"
 
-name_txt_file = "data_triang.txt"
+name_txt_file = "data_triang_bord.txt"
+flag_ecritur = False
 
 tps1 = time.process_time()
-flag_ecritur = False
 
 #les coordoné 3D des points a placer en cm
 h = 1.2         #hauteur du robeaut
@@ -27,8 +27,9 @@ pts_coin = [[-4.4,11.5,h], [5,11.5,h], [0.25,19.7,h], [-15.25,15.3,h], [-20,23.5
 
 #gestion fichier
 fichier = open(name_txt_file, "w")#fichier dans le qulle on note les valuers
+
 fichier.write("Donné image triangle")
-fichier.write("\n\nAuteur: \t code_complet.py")
+fichier.write("\n\nAuteur: \t code_complet_seul_axe.py")
 fichier.write("\nDate: \t\t "+ str(datetime.now()))
 fichier.write("\nEnregitrement d'image: \t "+ ("oui"if(flag_ecritur) else"non"))
 fichier.write("\n\nLEGENDE: \nV: \t image trêtée avec sucsess")
@@ -58,37 +59,19 @@ for img in tout_image:
     nom_out_img_ok = file_out_img_ok + "/" + "ok_" + img
 
     try:
-        markerCorners, markerIds = modul_aruco.detect_aruco(nom_im = "image" +"/" + img, nom_out = nom_out_aruco, ecritur=flag_ecritur)
-        W = 1
-        id_origine = 0
-        while(id_origine < 3 and W == 1):
-            F = 0
-            ok = 0
-            try:
-                pos_centre, pos_coin = modul_aruco.find_pos_3d_to_2d(markerCorners, markerIds, id_origine, nom_im = "image" +"/" + img, 
-                    nom_out_axe = nom_out_axe, nom_out_detect = nom_out_detect, obj_bleu = pts_centre , obj_vert = pts_coin, ecritur=flag_ecritur)
-
-                pos_coint_reel,W,I = modul_aruco.trouve_pos_exact(pos_coin, name_img = "image" +"/" + img, name_out = nom_out_img_ok, h = 25, w = 25, aire_min = 30,  aire_max = 70, ecritur=True)
-                ok = 1
-            except Exception as err:
-                num_errors = num_errors + 1
-                F = 1 if ok == 0 else 0
-            id_origine += 1
-        if F :
-            print("\x1b[1A\x1b[31;1mimage %s: %s\x1b[0J\x1b[1B\x1b[0m" % (img, "n'a pas pu être trété"))
-            fichier.write("\nF\t\t\t\t" + img + " : \t" +  "pas trouvé")
-        else :
-            #print(pos_coint_reel)
-            id_origine -= 1
-            if(W):
-                status = "W"
-                num_warning += 1
+        pos_centre, pos_coin = modul_aruco.find_pos_3d_to_2d_seul_axe(nom_im = "image" +"/" + img, 
+        nom_out_aruco = nom_out_aruco, nom_out_axe = nom_out_axe, nom_out_detect = nom_out_detect, obj_bleu = pts_centre , obj_vert = pts_coin, ecritur=flag_ecritur)
+    
+        pos_coint_reel,W,I = modul_aruco.trouve_pos_exact(pos_coin, name_img = "image" +"/" + img, name_out = nom_out_img_ok, h = 30, w = 30, aire_min = 30,  aire_max = 70, ecritur=True)
+        if(W):
+            status = "W"
+            num_warning += 1
+        else:
+            if(I):
+                status = "I" 
             else:
-                if(I):
-                    status = "I" 
-                else:
-                    status = "V"  
-            fichier.write("\n" + status + "\tId = " + str(id_origine) + "\t\t" + img + " : \t" +  str(pos_coint_reel))
+                status = "V"  
+        fichier.write("\n" + status + "\tId = " + str(0) + "\t\t" + img + " : \t" +  str(pos_coint_reel))
 
         #affichage barre de progression
         i+=1
@@ -98,11 +81,13 @@ for img in tout_image:
         anim = animation[i % 4] if i < nb_img else ""
         print ("\x1b[1A\x1b[33;1m[%s]\x1b[2G%s%s\x1b[%iG\x1b[32m(%i/%i) \x1b[31;1m%s\x1b[0m\x1b[31;1m%s\x1b[36m" 
             % ("."*len_barre, "#"*(int(i / step)), anim, (len_barre + 4), i, nb_img, err_text, "\t " + war_text))
+
     except Exception as err:
         i+=1
         num_errors = num_errors + 1
         print("\x1b[1A\x1b[31;1mimage %s: %s\x1b[0J\x1b[1B\x1b[0m" % (img, "n'a pas pu être trété"))
         fichier.write("\nF\t\t\t" + img + " : \t" +  "pas trouvé")
+
 
 juste = (nb_img - num_errors - num_warning)*100/nb_img 
 text_fin = "poursantage de réucite = " + str(juste) + "%"
