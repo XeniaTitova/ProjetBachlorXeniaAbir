@@ -102,7 +102,7 @@ for img in tout_image:
         i+=1
         num_errors = num_errors + 1
         print("\x1b[1A\x1b[31;1mimage %s: %s\x1b[0J\x1b[1B\x1b[0m" % (img, "n'a pas pu être trété"))
-        fichier.write("\nF\t\t\t" + img + " : \t" +  "pas trouvé")
+        fichier.write("\nF\t\t\t\t\t" + img + " : \t" +  "pas trouvé")
 
 juste = (nb_img - num_errors - num_warning)*100/nb_img 
 text_fin = "poursantage de réucite = " + str(juste) + "%"
